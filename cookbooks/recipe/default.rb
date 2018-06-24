@@ -17,3 +17,7 @@ package %w(vim git tmux terminator xclip)
     mode '0755'
   end
 end
+
+execute 'set_caps_lock_to_ctrl' do
+  command 'setxkbmap -option caps:ctrl_modifier'
+end
