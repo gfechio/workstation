@@ -7,7 +7,7 @@ execute "update-upgrade" do
   action :run
 end
 
-package %w(vim git tmux terminator xclip python3 virtualenv golang)
+package %w(vim git tmux terminator xclip python3 virtualenv golang tree)
 
 %w[ /home/gfechio/Git /home/gfechio/GitHub /home/gfechio/Go ].each do |path|
   directory path do
