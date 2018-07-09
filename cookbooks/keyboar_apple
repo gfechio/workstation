@@ -1,0 +1,73 @@
+You can set up the keyboard layout with this command:
+
+$ sudo dpkg-reconfigure keyboard-configuration
+This will change the config file /etc/default/keyboard into something like this:
+
+XKBMODEL="apple_laptop"
+XKBLAYOUT="us"
+XKBVARIANT="mac"
+XKBOPTIONS="terminate:ctrl_alt_bksp"
+… or another example:
+
+XKBMODEL="pc105"
+XKBLAYOUT="fr"
+XKBVARIANT="mac"
+XKBOPTIONS="lv3:rwin_switch"
+Default behaviour
+'fn'+'Enter' -> Insert
+
+'fn'+'Backspace' -> Delete
+
+'fn'+'Up' -> PageUp
+
+'fn'+'Down' -> PageDown
+
+'fn'+'Left' -> Home
+
+'fn'+'Right' -> End
+
+'Clear' -> NumLock
+
+Function key behaviour
+The hid_apple module has a parameter called 'fnmode' to change the behaviour of the 'fn'-key
+
+There's three settings for fnmode:
+
+0 = disabled: Disable the 'fn' key. Pressing 'fn' has no effect
+1 = fkeyslast: Enable the 'fn' key. Pressing 'F1-F12' keys will act as special keys. Pressing 'fn'+'F1-F12' will behave like 'F1-F12'.
+2 = fkeysfirst: Enable the 'fn' key. Pressing 'F1-F12' keys will behave like the real 'F1-F12'. Pressing 'fn'+'F8' will act as the special key (play/pause in this case).
+There's several ways to set this parameter:
+
+using sysfs, for example:
+
+$ echo 2 | sudo tee /sys/module/hid_apple/parameters/fnmode
+as a module parameter (won't work if you compile hid_apple in your kernel):
+
+$ echo options hid_apple fnmode=2 | sudo tee -a /etc/modprobe.d/hid_apple.conf 
+$ sudo modprobe --dry-run hid_apple 
+if this throws no error you can
+
+$ sudo update-initramfs -u 
+on the kernel command line: edit /etc/default/grub, and add the following to the GRUB_CMDLINE_LINUX_DEFAULT variable:
+
+hid_apple.fnmode=2
+Swapped keys on international keyboards
+The hid_apple module also has a parameter called 'iso_layout'
+
+0 means international layout, so on an 'English International' keyboard the '§±'-key will be top left, and the '`~'-key will be next to left shift
+1 swaps it around
+There's several ways to set this parameter:
+
+using sysfs, for example:
+
+$ echo 0 | sudo tee /sys/module/hid_apple/parameters/iso_layout
+as a module parameter (won't work if you compile hid_apple in your kernel):
+
+$ echo options hid_apple iso_layout=0 | sudo tee -a /etc/modprobe.d/hid_apple.conf 
+$ sudo modprobe --dry-run hid_apple 
+if this throws no error you can
+
+$ sudo update-initramfs -u 
+on the kernel command line: edit /etc/default/grub, and add the following to the GRUB_CMDLINE_LINUX_DEFAULT variable:
+
+hid_apple.iso_layout=0

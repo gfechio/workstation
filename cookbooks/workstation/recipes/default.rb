@@ -23,13 +23,19 @@ execute 'set_caps_lock_to_ctrl' do
 end
 
 #Dotfiles Config (TMUX ALIAS VIM ZSH BASH)
-git '~/GitHub/gfechio'  do
+git '/home/gfechio/GitHub/gfechio'  do
   repository 'https://github.com/gfechio/dotfiles.git'
   revision 'master'
   action :sync
 end
 
-execute 'move_dotfiles' do
-  command 'cp -r ~/GitHub/gfechio/dotfiles/.* ~'
-end
+#execute 'move_dotfiles' do
+#  command 'cp -r /home/gfechio/GitHub/gfechio/dotfiles/.* /home/gfechio/'
+#end
 
+cookbook_file '/home/gfechio/.config/gtk-3.0/gtk.css' do
+  source 'gtk.css'
+  mode '0755'
+  owner 'gfechio'
+  group 'gfechio'
+end
